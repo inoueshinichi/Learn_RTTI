@@ -4,13 +4,24 @@ C++のRTTI (RunTime Type Information) 実行時型情報
 # C++標準のRTTIシステム
 1. dynamic_cast演算子
 2. typeid演算子
-+ メリット: 組み込み型なのでどんな型にも適用できる
-+ デメリット: 実行速度が遅い
+メリット  
++ 組み込み型なのでどんな型にも適用できる
+デメリット  
++ 実行速度が遅い
 
-# 単一継承用カスタムRTTIシステム
+# C++標準RTTIシステムの回避方法
+1. 文字列を使う
+2. 定数を使う
+3. Staticメンバ変数のアドレスを使う
+
+# 単一継承用カスタムRTTIシステム(Static変数アドレス)
 + クラスに付与したRTTIStatic変数(クラス)のアドレスを使う. (クラスのstatic変数のアドレスはクラスに一意)
-+ メリット: 実行速度が速い
-+ デメリット: RTTIStatic変数を持っている独自クラスにしかRTTIの恩恵を受けられない
+メリット  
++ 実行速度が速い
+デメリット  
++ RTTIStatic変数を持っている独自クラスにしかRTTIの恩恵を受けられない
++ 適用先クラスのHeaderとSourceに独自のマクロを追加することが煩わしい
++ 可読性を下げる
 ```
 #pragma once
 #include <string>
@@ -34,9 +45,9 @@ private:
     MonoRtti& operator=(const MonoRtti&) = delete;
 };
 
-////////////////
-// Headerに定義
-////////////////
+//////////////////////////
+// Headerの適用先クラスに定義
+//////////////////////////
 #define MONO_RTTI_DECL                 \
 public:                                \
     static const MonoRtti sMonoRtti;   \
@@ -45,9 +56,9 @@ public:                                \
         return sMonoRtti;              \
     }
 
-////////////////
-// Sourceに定義
-////////////////
+//////////////////////////
+// 適用先クラスのSourceに定義
+//////////////////////////
 // Root用
 #define MONO_RTTI_IMPL_NOPARENT(class_name)           \
     const MonoRtti class_name::sMonoRtti(#class_name);
@@ -58,6 +69,6 @@ public:                                \
 ```
 
 
-# 多重継承用カスタムRTTIシステム
+# 多重継承用カスタムRTTIシステム(Static変数アドレス)
 
 
