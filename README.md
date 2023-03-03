@@ -4,8 +4,13 @@ C++のRTTI (RunTime Type Information) 実行時型情報
 # C++標準のRTTIシステム
 1. dynamic_cast演算子
 2. typeid演算子
++ メリット: 組み込み型なのでどんな型にも適用できる
++ デメリット: 実行速度が遅い
 
 # 単一継承用カスタムRTTIシステム
++ クラスに付与したRTTIStatic変数(クラス)のアドレスを使う. (クラスのstatic変数のアドレスはクラスに一意)
++ メリット: 実行速度が速い
++ デメリット: RTTIStatic変数を持っている独自クラスにしかRTTIの恩恵を受けられない
 ```
 #pragma once
 #include <string>
