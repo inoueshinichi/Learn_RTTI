@@ -5,57 +5,54 @@ C++のRTTI (RunTime Type Information) 実行時型情報
 1. dynamic_cast演算子
 2. typeid演算子
 
-
-## typeid演算子
-適用先のオブジェクトの型についての情報を返す. 重要な情報は下記の2つ
-1. ユーザーが読めるクラス名 (MSVCは直接ユーザーが見てわかるが, MSVC以外のGNUやClang系はデマングルが必要)
-2. C++Versionのクラス名
-
+# 単一継承用カスタムRTTIシステム
 ```
-GameSecretBossEnemy* pSecretBossEnemy = new GameSecretBossEnemy();
-GameEnemy* pEnemy = dynamic_cast<GameEnemy*>(pSecretBossEnemy);
+#pragma once
+#include <string>
 
-// type_info
-const type_info& info = typeid(*pEnemy);
-std::cout << type_info.name() << std::cout; // ClassName: GameSecretBossEnemy
+class MonoRtti
+{
+public:
+    MonoRtti(const std::string &className);
+    MonoRtti(const std::string &className, const MonoRtti &baseRtti);
 
-// クラス型の比較
-const type_info& info1 = typeid(*pObj1);
-const type_info& info2 = typeid(*pObj2);
-if (info1 == info2)
-    // この2つは同じ型. 何らかの処理
+    const char* GetClassName() const;
+    bool operator==(const MonoRtti &rtti) { return (this == &rtti); } // アドレス比較
+    bool DerivedFrom(const MonoRtti &rtti) const;
 
+private:
+    std::string mClassName;
+    const MonoRtti *mMonoBaseRtti;
 
-// 型名の比較に使える
-if (typeid(*pEntity) == typeid(GameSecretBossEnemy))
-    // オブジェクト *pEntityの実態クラスはGameSecretBossEnemy.
+    // コピー系は禁止
+    MonoRtti(const MonoRtti&) = delete;
+    MonoRtti& operator=(const MonoRtti&) = delete;
+};
 
+////////////////
+// Headerに定義
+////////////////
+#define MONO_RTTI_DECL                 \
+public:                                \
+    static const MonoRtti sMonoRtti;   \
+    const MonoRtti &GetRtti()          \
+    {                                  \
+        return sMonoRtti;              \
+    }
+
+////////////////
+// Sourceに定義
+////////////////
+// Root用
+#define MONO_RTTI_IMPL_NOPARENT(class_name)           \
+    const MonoRtti class_name::sMonoRtti(#class_name);
+
+// Rootの子孫用
+#define MONO_RTTI_IMPL(class_name, base_name)                               \
+    const MonoRtti class_name::sMonoRtti(#class_name, base_name::sMonoRtti);
 ```
 
-## Unix系のデマングル
-+ デマングル用関数は, libstdc++ライブラリに含まれる.
-+ #include/<cxxabi.h/>ヘッダが必要
-```
- #if __has_include(<cxxabi.h>)
-            #include <cxxabi.h>
-            #define DEMANGLE_LOG(message, singleton)                                                         \
-            std::string class_name;                                                                          \
-            const std::type_info &type_id = typeid(singleton); /* RTTI */                                    \
-            int stat{-1};                                                                                    \
-            char *name = abi::__cxa_demangle(type_id.name(), 0, 0, &stat); /* デマングル */                    \
-            if (name != nullptr)                                                                             \
-            {                                                                                                \
-                if (stat == 0) /* success: stat == 0 */                                                      \
-                {                                                                                            \
-                    class_name = name;                                                                       \
-                    std::cout << "[" << #message << "] a class name `" << class_name << "`" << std::endl;    \
-                    ::free(name);                                                                            \
-                }                                                                                            \
-            }                                                                                                \
-            if (stat != 0)                                                                                   \
-            {                                                                                                \
-                std::cout << "[" << #message << "] a singleton `" <<                                         \
-                    typeid(SINGLETON).name() << "`" << std::endl;                                            \
-            }
-#endif
-```
+
+# 多重継承用カスタムRTTIシステム
+
+
