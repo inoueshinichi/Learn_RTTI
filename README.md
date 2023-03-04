@@ -32,7 +32,8 @@ public:
     MonoRtti(const std::string &className);
     MonoRtti(const std::string &className, const MonoRtti &baseRtti);
 
-    const char* GetClassName() const;
+    const std::string& GetClassName() const;
+    bool IsExactly(const RTTI& rtti) { return (this == &rtti); } // アドレス比較なので高速
     bool operator==(const MonoRtti &rtti) { return (this == &rtti); } // アドレス比較
     bool DerivedFrom(const MonoRtti &rtti) const;
 
@@ -48,12 +49,20 @@ private:
 //////////////////////////
 // Headerの適用先クラスに定義
 //////////////////////////
-#define MONO_RTTI_DECL                 \
+#define MONO_RTTI_DECL_NOPARENT        \
 public:                                \
     static const MonoRtti sMonoRtti;   \
-    const MonoRtti &GetRtti()          \
+    virtual const MonoRtti &GetRtti()  \
     {                                  \
         return sMonoRtti;              \
+    }
+
+#define MONO_RTTI_DECL                         \
+public:                                        \
+    static const MonoRtti sMonoRtti;           \
+    virtual const MonoRtti &GetRtti() override \
+    {                                          \
+        return sMonoRtti;                      \
     }
 
 //////////////////////////
