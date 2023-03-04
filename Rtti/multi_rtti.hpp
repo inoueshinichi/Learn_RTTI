@@ -30,9 +30,13 @@ class MultiRtti
         int index = numParents - restSize - 1;
         mRttiParents[index] = &first; // 親クラスが所有する静的Rttiクラスのポインタ
 
-        if (sizeof...(rest))
+        if (sizeof...(rest) > 0)
         {
             GetPackedParamsAddressImpl(pp, numParents, rest...);
+        }
+        else
+        {
+            GetPackedParamsAddressImpl(pp, numParents);
         }
     }
 
@@ -66,10 +70,10 @@ public:
     {
         if (mNumParents > 0)
         {
+            std::cout << "[Delete] MultiRtti of " << mClassName << " has " << mNumParents << " parents." << std::endl;
             delete[] mRttiParents;
             mRttiParents = nullptr;
             mNumParents = 0;
-            std::cout << "[Delete] MultiRtti of " << mClassName << std::endl;
         }
     }
 
