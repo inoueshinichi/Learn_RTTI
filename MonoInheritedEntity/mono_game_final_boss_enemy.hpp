@@ -13,22 +13,22 @@
 
 #include <mono_rtti.hpp>
 
-class GameFinalBossEnemy final : public GameBossEnemy
+class GameMonoFinalBossEnemy final : public GameMonoBossEnemy
 {
     MONO_RTTI_DECL
 public:
-    virtual ~GameFinalBossEnemy() {}
-    GameFinalBossEnemy(const GameFinalBossEnemy &) = delete;
-    GameFinalBossEnemy &operator=(const GameFinalBossEnemy &) = delete;
-    GameFinalBossEnemy(GameFinalBossEnemy &&) = default;
-    GameFinalBossEnemy &operator=(GameFinalBossEnemy &&) = default;
+    virtual ~GameMonoFinalBossEnemy() {}
+    GameMonoFinalBossEnemy(const GameMonoFinalBossEnemy &) = delete;
+    GameMonoFinalBossEnemy &operator=(const GameMonoFinalBossEnemy &) = delete;
+    GameMonoFinalBossEnemy(GameMonoFinalBossEnemy &&) = default;
+    GameMonoFinalBossEnemy &operator=(GameMonoFinalBossEnemy &&) = default;
 
-    static const char *GetClassName() { return "GameFinalBossEnemy"; }
-    virtual const char *GetObjectName() const override { return GameFinalBossEnemy::GetClassName(); }
+    static const char *GetClassName() { return "GameMonoFinalBossEnemy"; }
+    virtual const char *GetObjectName() const override { return GameMonoFinalBossEnemy::GetClassName(); }
 
 protected:
     friend class GameMonoEntityFactory;
-    GameFinalBossEnemy() = default;
+    GameMonoFinalBossEnemy() = default;
 };
 
-MONO_RTTI_IMPL(GameFinalBossEnemy, GameBossEnemy)
+MONO_RTTI_IMPL(GameMonoFinalBossEnemy, GameMonoBossEnemy)

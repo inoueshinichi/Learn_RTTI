@@ -47,31 +47,31 @@ int main(int, char**)
 
         // Register
         std::cout << "Register" << std::endl;
-        factory.Register<GameEntity>(GameEntity::GetClassName());
-        factory.Register<GameCamera>(GameCamera::GetClassName());
-        factory.Register<GameFpsCamera>(GameFpsCamera::GetClassName());
-        factory.Register<GamePlayer>(GamePlayer::GetClassName());
-        factory.Register<GameLegendPlayer>(GameLegendPlayer::GetClassName());
-        factory.Register<GameActor>(GameActor::GetClassName());
-        factory.Register<GameEnemy>(GameEnemy::GetClassName());
-        factory.Register<GameBossEnemy>(GameBossEnemy::GetClassName());
-        factory.Register<GameFinalBossEnemy>(GameFinalBossEnemy::GetClassName());
-        factory.Register<GameSecretBossEnemy>(GameSecretBossEnemy::GetClassName());
+        factory.Register<GameMonoEntity>(GameMonoEntity::GetClassName());
+        factory.Register<GameMonoCamera>(GameMonoCamera::GetClassName());
+        factory.Register<GameMonoFpsCamera>(GameMonoFpsCamera::GetClassName());
+        factory.Register<GameMonoPlayer>(GameMonoPlayer::GetClassName());
+        factory.Register<GameMonoLegendPlayer>(GameMonoLegendPlayer::GetClassName());
+        factory.Register<GameMonoActor>(GameMonoActor::GetClassName());
+        factory.Register<GameMonoEnemy>(GameMonoEnemy::GetClassName());
+        factory.Register<GameMonoBossEnemy>(GameMonoBossEnemy::GetClassName());
+        factory.Register<GameMonoFinalBossEnemy>(GameMonoFinalBossEnemy::GetClassName());
+        factory.Register<GameMonoSecretBossEnemy>(GameMonoSecretBossEnemy::GetClassName());
         std::cout << std::endl;
 
         // Create
         std::cout << "Create" << std::endl;
-        std::vector<std::shared_ptr<GameEntity>> entities;
-        entities.emplace_back(factory.CreateEntity("GameEntity"));
-        entities.emplace_back(factory.CreateEntity("GameCamera"));
-        entities.emplace_back(factory.CreateEntity("GameFpsCamera"));
-        entities.emplace_back(factory.CreateEntity("GamePlayer"));
-        entities.emplace_back(factory.CreateEntity("GameLegendPlayer"));
-        entities.emplace_back(factory.CreateEntity("GameActor"));
-        entities.emplace_back(factory.CreateEntity("GameEnemy"));
-        entities.emplace_back(factory.CreateEntity("GameBossEnemy"));
-        entities.emplace_back(factory.CreateEntity("GameFinalBossEnemy"));
-        entities.emplace_back(factory.CreateEntity("GameSecretBossEnemy"));
+        std::vector<std::shared_ptr<GameMonoEntity>> entities;
+        entities.emplace_back(factory.CreateEntity("GameMonoEntity"));
+        entities.emplace_back(factory.CreateEntity("GameMonoCamera"));
+        entities.emplace_back(factory.CreateEntity("GameMonoFpsCamera"));
+        entities.emplace_back(factory.CreateEntity("GameMonoPlayer"));
+        entities.emplace_back(factory.CreateEntity("GameMonoLegendPlayer"));
+        entities.emplace_back(factory.CreateEntity("GameMonoActor"));
+        entities.emplace_back(factory.CreateEntity("GameMonoEnemy"));
+        entities.emplace_back(factory.CreateEntity("GameMonoBossEnemy"));
+        entities.emplace_back(factory.CreateEntity("GameMonoFinalBossEnemy"));
+        entities.emplace_back(factory.CreateEntity("GameMonoSecretBossEnemy"));
         std::cout << std::endl;
 
         // RTTI
@@ -86,26 +86,26 @@ int main(int, char**)
         for (auto &sp : entities)
         {
             // sMonoRttiのアドレス直接比較
-            if (&(sp->GetRtti()) == &(GameLegendPlayer::sMonoRtti))
+            if (&(sp->GetRtti()) == &(GameMonoLegendPlayer::sMonoRtti))
             {
-                std::cout << sp->GetObjectName() << " : " << GameLegendPlayer::GetClassName() << std::endl;
+                std::cout << sp->GetObjectName() << " : " << GameMonoLegendPlayer::GetClassName() << std::endl;
             }
 
             // MonoRttiのoperator==でアドレス比較をラッピング
-            if (sp->GetRtti() == GameBossEnemy::sMonoRtti)
+            if (sp->GetRtti() == GameMonoBossEnemy::sMonoRtti)
             {
-                std::cout << sp->GetObjectName() << " : " << GameBossEnemy::GetClassName() << std::endl;
+                std::cout << sp->GetObjectName() << " : " << GameMonoBossEnemy::GetClassName() << std::endl;
             }
         }
 
         // Check what from is GameSecretBossEnemy derived with polymorphism
         std::cout << "[Check what from is GameSecretBossEnemy derived with polymorphism]" << std::endl;
-        std::shared_ptr<GameSecretBossEnemy> spSecretBossEnemy;
+        std::shared_ptr<GameMonoSecretBossEnemy> spSecretBossEnemy;
         for (auto& sp : entities)
         {
-            if (sp->GetRtti() == GameSecretBossEnemy::sMonoRtti)
+            if (sp->GetRtti() == GameMonoSecretBossEnemy::sMonoRtti)
             {
-                spSecretBossEnemy = std::static_pointer_cast<GameSecretBossEnemy>(sp); // share
+                spSecretBossEnemy = std::static_pointer_cast<GameMonoSecretBossEnemy>(sp); // share
             }
         }
         for (auto& sp : entities)

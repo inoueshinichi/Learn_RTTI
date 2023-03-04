@@ -13,22 +13,22 @@
 
 #include <mono_rtti.hpp>
 
-class GameFpsCamera final : public GameCamera
+class GameMonoFpsCamera final : public GameMonoCamera
 {
     MONO_RTTI_DECL
 public:
-    virtual ~GameFpsCamera() {}
-    GameFpsCamera(const GameFpsCamera &) = delete;
-    GameFpsCamera &operator=(const GameFpsCamera &) = delete;
-    GameFpsCamera(GameFpsCamera &&) = default;
-    GameFpsCamera &operator=(GameFpsCamera &&) = default;
+    virtual ~GameMonoFpsCamera() {}
+    GameMonoFpsCamera(const GameMonoFpsCamera &) = delete;
+    GameMonoFpsCamera &operator=(const GameMonoFpsCamera &) = delete;
+    GameMonoFpsCamera(GameMonoFpsCamera &&) = default;
+    GameMonoFpsCamera &operator=(GameMonoFpsCamera &&) = default;
 
-    static const char *GetClassName() { return "GameFpsCamera"; }
-    virtual const char *GetObjectName() const override { return GameFpsCamera::GetClassName(); }
+    static const char *GetClassName() { return "GameMonoFpsCamera"; }
+    virtual const char *GetObjectName() const override { return GameMonoFpsCamera::GetClassName(); }
 
 protected:
     friend class GameMonoEntityFactory;
-    GameFpsCamera() = default;
+    GameMonoFpsCamera() = default;
 };
 
-MONO_RTTI_IMPL(GameFpsCamera, GameCamera)
+MONO_RTTI_IMPL(GameMonoFpsCamera, GameMonoCamera)

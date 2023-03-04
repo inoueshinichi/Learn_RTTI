@@ -13,22 +13,22 @@
 
 #include <mono_rtti.hpp>
 
-class GamePlayer : public GameEntity
+class GameMonoPlayer : public GameMonoEntity
 {
     MONO_RTTI_DECL
 public:
-    virtual ~GamePlayer() {}
-    GamePlayer(const GamePlayer &) = delete;
-    GamePlayer &operator=(const GamePlayer &) = delete;
-    GamePlayer(GamePlayer &&) = default;
-    GamePlayer &operator=(GamePlayer &&) = default;
+    virtual ~GameMonoPlayer() {}
+    GameMonoPlayer(const GameMonoPlayer &) = delete;
+    GameMonoPlayer &operator=(const GameMonoPlayer &) = delete;
+    GameMonoPlayer(GameMonoPlayer &&) = default;
+    GameMonoPlayer &operator=(GameMonoPlayer &&) = default;
 
-    static const char *GetClassName() { return "GamePlayer"; }
-    virtual const char *GetObjectName() const override { return GamePlayer::GetClassName(); }
+    static const char *GetClassName() { return "GameMonoPlayer"; }
+    virtual const char *GetObjectName() const override { return GameMonoPlayer::GetClassName(); }
 
 protected:
     friend class GameMonoEntityFactory;
-    GamePlayer() = default;
+    GameMonoPlayer() = default;
 };
 
-MONO_RTTI_IMPL(GamePlayer, GameEntity)
+MONO_RTTI_IMPL(GameMonoPlayer, GameMonoEntity)

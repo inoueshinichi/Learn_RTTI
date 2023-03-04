@@ -16,31 +16,31 @@
 #include <iostream>
 #include <type_traits>
 
-#include <mono_game_entity.hpp>
+#include <multi_game_entity.hpp>
 
 // Singletonが望ましい
-class GameMonoEntityFactory
+class GameMultiEntityFactory
 {
 public:
-    GameMonoEntityFactory() = default;
-    ~GameMonoEntityFactory() = default;
-    GameMonoEntityFactory(const GameMonoEntityFactory &) = delete;
-    GameMonoEntityFactory &operator=(const GameMonoEntityFactory &) = delete;
-    GameMonoEntityFactory(GameMonoEntityFactory &&) = default;
-    GameMonoEntityFactory &operator=(GameMonoEntityFactory &&) = default;
+    GameMultiEntityFactory() = default;
+    ~GameMultiEntityFactory() = default;
+    GameMultiEntityFactory(const GameMultiEntityFactory &) = delete;
+    GameMultiEntityFactory &operator=(const GameMultiEntityFactory &) = delete;
+    GameMultiEntityFactory(GameMultiEntityFactory &&) = default;
+    GameMultiEntityFactory &operator=(GameMultiEntityFactory &&) = default;
 
-    std::shared_ptr<GameMonoEntity> CreateEntity(const std::string &type)
+    std::shared_ptr<GameMultiEntity> CreateEntity(const std::string &type)
     {
         auto iter = mRegistry.find(type);
         if (iter == mRegistry.end())
         {
-            return std::shared_ptr<GameMonoEntity>(); // null. nullはsegmentationfaultになってデバッグしずらい
+            return std::shared_ptr<GameMultiEntity>(); // null. nullはsegmentationfaultになってデバッグしずらい
         }
         return (*iter).second(); // creator() -> std::shared_ptr<Derived>
     }
 
     // std::is_comvertible_v : >= C++17
-    template <typename ENTITY, typename std::enable_if_t<std::is_convertible_v<ENTITY, GameMonoEntity>> * = nullptr>
+    template <typename ENTITY, typename std::enable_if_t<std::is_convertible_v<ENTITY, GameMultiEntity>> * = nullptr>
     void Register(const std::string &type)
     {
         auto iter = mRegistry.find(type);
@@ -57,7 +57,7 @@ public:
             ptr = nullptr;
         };
 
-        auto creator = [deleter]() -> std::shared_ptr<GameMonoEntity> {
+        auto creator = [deleter]() -> std::shared_ptr<GameMultiEntity> {
             std::cout << "[Create] " << ENTITY::GetClassName() << std::endl;
             return std::shared_ptr<ENTITY>(new ENTITY(), deleter);
         };
@@ -66,6 +66,6 @@ public:
     }
 
 private :
-    typedef std::map<std::string, std::function<std::shared_ptr<GameMonoEntity>()>> CreatorMap;
+    typedef std::map<std::string, std::function<std::shared_ptr<GameMultiEntity>()>> CreatorMap;
     CreatorMap mRegistry;
 };

@@ -13,22 +13,22 @@
 
 #include <mono_rtti.hpp>
 
-class GameEntity : public std::enable_shared_from_this<GameEntity>
+class GameMonoEntity : public std::enable_shared_from_this<GameMonoEntity>
 {
     MONO_RTTI_NO_PARENT_DECL
 public:
-    virtual ~GameEntity() {}
-    GameEntity(const GameEntity &) = delete;
-    GameEntity &operator=(const GameEntity &) = delete;
-    GameEntity(GameEntity &&) = default;
-    GameEntity &operator=(GameEntity &&) = default;
+    virtual ~GameMonoEntity() {}
+    GameMonoEntity(const GameMonoEntity &) = delete;
+    GameMonoEntity &operator=(const GameMonoEntity &) = delete;
+    GameMonoEntity(GameMonoEntity &&) = default;
+    GameMonoEntity &operator=(GameMonoEntity &&) = default;
 
-    static const char *GetClassName() { return "GameEntity"; }
-    virtual const char*GetObjectName() const { return GameEntity::GetClassName(); }
+    static const char *GetClassName() { return "GameMonoEntity"; }
+    virtual const char*GetObjectName() const { return GameMonoEntity::GetClassName(); }
 
 protected:
     friend class GameMonoEntityFactory;
-    GameEntity() = default;
+    GameMonoEntity() = default;
 };
 
-MONO_RTTI_IMPL_NOPARENT(GameEntity)
+MONO_RTTI_IMPL_NOPARENT(GameMonoEntity)
